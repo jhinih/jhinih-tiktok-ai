@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package login;
+
+option go_package = "./login";
+
+message SendCodeRequest{
+	 string Email=1;
+}
+message SendCodeResponse{
+
+}
+message RegisterRequest{
+  string Email=1;
+  string  Code=2;
+	string Password=3;
+	string  Username=4;
+	string Avatar=5;
+  //  string Phone=6；
+  //  string ClientIp=7;
+  //  string ClientPort=8;
+  //  string DeviceInfo=9;
+  //  string Bio=10;
+}
+message RegisterResponse{
+	string Atoken=1;
+}
+message  LoginRequest{
+  string  Email=1;
+  string  Password=2;
+}
+message  LoginResponse{
+	string Atoken=1;
+	string  Rtoken=2;
+}
+message RefreshTokenRequest{
+	string Rtoken=1;
+}
+message RefreshTokenResponse{
+	string Atoken=1;
+}
+message GetTokenRequest{
+	string UserID=1;
+	string UserName=2;
+	string  Role=3;
+}
+message GetTokenResponse{
+	string Atoken=1;
+}
+
+
+service login{
+  rpc SendCode(SendCodeRequest)returns(SendCodeResponse);
+  rpc Register(RegisterRequest)returns(RegisterResponse);
+
+  rpc  Login( LoginRequest)returns( LoginResponse);
+  rpc RefreshToken(RefreshTokenRequest)returns(RefreshTokenResponse);
+
+  rpc GetToken(GetTokenRequest)returns(GetTokenResponse);
+}
+
+
+// goctl rpc protoc login.proto --go_out=./types --go-grpc_out=./types --zrpc_out=.
+// goctl rpc protoc login.proto --go_out=./types --go-grpc_out=./types --zrpc_out=. --home ../../../template

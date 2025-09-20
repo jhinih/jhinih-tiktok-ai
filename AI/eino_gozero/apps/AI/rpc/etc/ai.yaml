@@ -1,0 +1,12 @@
+Name: ai.rpc
+ListenOn: 0.0.0.0:8081
+Timeout: 30000000000  # 毫秒
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: ai.rpc
+LoginRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: login.rpc
