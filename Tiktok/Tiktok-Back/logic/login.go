@@ -59,6 +59,23 @@ func (l *LoginLogic) SendCode(ctx context.Context, req types.SendCodeRequest) (r
 	return resp, nil
 }
 
+// SendResume 发送简历
+func (l *LoginLogic) SendResume(ctx context.Context, req types.SendResumeRequest) (resp types.SendResumeResponse, err error) {
+	defer utils.RecordTime(time.Now())()
+	// 验证邮箱格式
+	re := regexp.MustCompile(EMAIL_REGEX, 0)
+	if isMatch, _ := re.MatchString(req.Email); !isMatch {
+		return resp, response.ErrResponse(err, response.EMAIL_NOT_VALID)
+	}
+	err = email.SendResume(req.Email)
+	if err != nil {
+		return resp, response.ErrResponse(err, response.EMAIL_SEND_ERROR)
+	}
+	// 发送邮箱成功
+	zlog.CtxDebugf(ctx, "发送简历成功: %v", req)
+	return resp, nil
+}
+
 // Register 注册
 func (l *LoginLogic) Register(ctx context.Context, req types.RegisterRequest) (resp types.RegisterResponse, err error) {
 	defer utils.RecordTime(time.Now())()

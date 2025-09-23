@@ -2,10 +2,10 @@ package ais
 
 import (
 	"context"
+	"eino_gozero/common/ai_common/jhinih_model/chatmodel"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cloudwego/eino-ext/components/model/ark"
 	"github.com/cloudwego/eino/callbacks"
 	"github.com/cloudwego/eino/components/tool"
 	"github.com/cloudwego/eino/compose"
@@ -20,17 +20,8 @@ func Test1() {
 	startTime := time.Now()
 	fmt.Printf("程序开始执行时间: %s\n", startTime.Format("2006-01-02 15:04:05.000"))
 
-	arkAPIKey := "7f3927d1-ee1f-41a1-b8a3-4976784460c5"
-	arkModelName := "doubao-1-5-pro-32k-250115"
 	ctx := context.Background()
-	arkModel, err := ark.NewChatModel(ctx, &ark.ChatModelConfig{
-		APIKey: arkAPIKey,
-		Model:  arkModelName,
-	})
-	if err != nil {
-		fmt.Printf("failed to create chat model: %v", err)
-		return
-	}
+	arkModel := chatmodel.NewArkChatModel(ctx)
 	addtool := GetAddTool()
 	subtool := GetSubTool()
 	analyzetool := GetAnalyzeTool()
@@ -76,7 +67,7 @@ func Test1() {
 		StreamToolCallChecker: toolCallChecker,
 	})
 	if err != nil {
-		fmt.Printf("failed to create agent: %v", err)
+		fmt.Printf("Agent创建失败: %v", err)
 		return
 	}
 	//构建输入模板schema
@@ -94,7 +85,7 @@ func Test1() {
 	//添加了loggerCallback的回调函数
 	sr, err := raAgent.Stream(ctx, chatmsg, agent.WithComposeOptions(compose.WithCallbacks(&loggerCallback{})))
 	if err != nil {
-		fmt.Printf("failed to stream: %v", err)
+		fmt.Printf("流式调用失败: %v", err)
 		return
 	}
 	//构建最终回答
@@ -106,16 +97,16 @@ func Test1() {
 				// finish
 				break
 			}
-			fmt.Printf("failed to recv: %v", err)
+			fmt.Printf("接受流式输出失败: %v", err)
 			return
 		}
 		finalContent += msg.Content
 		fmt.Printf("%v", msg.Content)
 	}
 
-	fmt.Printf("\n\n===== final answer =====\n\n")
+	fmt.Printf("\n\n===== 失败回答 =====\n\n")
 	fmt.Printf("%s", finalContent)
-	fmt.Printf("\n\n===== finished =====\n")
+	fmt.Printf("\n\n===== 完成 =====\n")
 
 	// 计算并打印运行时间
 	endTime := time.Now()
@@ -130,21 +121,21 @@ type loggerCallback struct {
 }
 
 func (cb *loggerCallback) OnStart(ctx context.Context, info *callbacks.RunInfo, input callbacks.CallbackInput) context.Context {
-	fmt.Println("==================")
-	inputStr, _ := json.MarshalIndent(input, "", "  ") // nolint: byted_s_returned_err_check
-	fmt.Printf("[OnStart] %s\n", string(inputStr))
+	fmt.Println("=========开始=========")
+	inputStr, _ := json.MarshalIndent(input, "", "  ")
+	fmt.Println(string(inputStr))
 	return ctx
 }
 
 func (cb *loggerCallback) OnEnd(ctx context.Context, info *callbacks.RunInfo, output callbacks.CallbackOutput) context.Context {
-	fmt.Println("=========[OnEnd]=========")
-	outputStr, _ := json.MarshalIndent(output, "", "  ") // nolint: byted_s_returned_err_check
+	fmt.Println("=========结束=========")
+	outputStr, _ := json.MarshalIndent(output, "", "  ")
 	fmt.Println(string(outputStr))
 	return ctx
 }
 
 func (cb *loggerCallback) OnError(ctx context.Context, info *callbacks.RunInfo, err error) context.Context {
-	fmt.Println("=========[OnError]=========")
+	fmt.Println("=========错误=========")
 	fmt.Println(err)
 	return ctx
 }
@@ -157,13 +148,12 @@ func (cb *loggerCallback) OnEndWithStreamOutput(ctx context.Context, info *callb
 	go func() {
 		defer func() {
 			if err := recover(); err != nil {
-				fmt.Println("[OnEndStream] panic err:", err)
+				fmt.Println("流式输出结束错误:", err)
 			}
 		}()
 
-		defer output.Close() // remember to close the stream in defer
+		defer output.Close()
 
-		fmt.Println("=========[OnEndStream]=========")
 		for {
 			frame, err := output.Recv()
 			if errors.Is(err, io.EOF) {
@@ -171,13 +161,13 @@ func (cb *loggerCallback) OnEndWithStreamOutput(ctx context.Context, info *callb
 				break
 			}
 			if err != nil {
-				fmt.Printf("internal error: %s\n", err)
+				fmt.Printf("错误: %s\n", err)
 				return
 			}
 
 			s, err := json.Marshal(frame)
 			if err != nil {
-				fmt.Printf("internal error: %s\n", err)
+				fmt.Printf("错误: %s\n", err)
 				return
 			}
 

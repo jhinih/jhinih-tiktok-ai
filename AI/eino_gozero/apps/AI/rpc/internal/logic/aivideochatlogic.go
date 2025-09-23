@@ -4,7 +4,6 @@ import (
 	"context"
 	"eino_gozero/common/ai_common/ais/aiUtils"
 	"eino_gozero/common/ai_common/jhinih_model/chatmodel"
-	"fmt"
 	ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
 	"github.com/cloudwego/eino/callbacks"
 	"github.com/cloudwego/eino/compose"
@@ -146,6 +145,5 @@ func (l *AIVideoChatLogic) AIVideoChat(in *ai.AIVideoChatRequest) (*ai.AIVideoCh
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer)
 	return &ai.AIVideoChatResponse{Answer: answer}, nil
 }

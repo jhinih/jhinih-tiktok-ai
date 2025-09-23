@@ -14,16 +14,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"github.com/streadway/amqp"
-	"log"
 	"mime"
 	"os"
 	"time"
-)
-
-const (
-	core     = 4  // 最小并发
-	capacity = 32 // 最大并发
 )
 
 func main() {
@@ -92,7 +85,7 @@ func main() {
 		if err := json.Unmarshal(body, &task); err != nil {
 			return err
 		}
-		return handle(task) // 你原来的 handle 逻辑
+		return handle(task)
 	})
 	if err != nil {
 		zlog.Fatalf("启动消费者失败: %v", err)
@@ -103,20 +96,21 @@ func main() {
 	initialize.Eve()
 }
 
-func process(d amqp.Delivery) {
-	var task types.UploadTask
-	if err := json.Unmarshal(d.Body, &task); err != nil {
-		log.Printf("垃圾信息: %v", err)
-		d.Nack(false, false) // 无法解析直接丢弃
-		return
-	}
-	if err := handle(task); err == nil {
-		d.Ack(false)
-	} else {
-		// 失败重新入队
-		d.Nack(false, true)
-	}
-}
+//
+//func process(d amqp.Delivery) {
+//	var task types.UploadTask
+//	if err := json.Unmarshal(d.Body, &task); err != nil {
+//		log.Printf("垃圾信息: %v", err)
+//		d.Nack(false, false) // 无法解析直接丢弃
+//		return
+//	}
+//	if err := handle(task); err == nil {
+//		d.Ack(false)
+//	} else {
+//		// 失败重新入队
+//		d.Nack(false, true)
+//	}
+//}
 
 func handle(task types.UploadTask) error {
 	ctx := context.Background()
@@ -160,8 +154,8 @@ func handle(task types.UploadTask) error {
 		},
 		5*time.Minute,
 	)
-	res := types.UploadResult{ID: task.ID, OK: true, URL: url}
+	resp := types.UploadResult{ID: task.ID, OK: true, URL: url}
 
-	manager.Push(task.ID, res)
+	manager.Push(task.ID, resp)
 	return nil
 }

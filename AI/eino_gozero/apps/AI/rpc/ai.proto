@@ -35,7 +35,9 @@ service ai{
 
 
   rpc AISendCode(AISendCodeRequest)returns(AISendCodeResponse);
+  rpc AISendResume(AIRequest)returns(AIResponse);
   rpc AIGetUserInfo(AIRequest)returns(AIResponse);
+  rpc AIGetVideo(AIRequest)returns(AIResponse);
 
 
   rpc AI(AIRequest)returns(AIResponse);

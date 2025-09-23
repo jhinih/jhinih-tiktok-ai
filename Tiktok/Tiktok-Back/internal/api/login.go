@@ -24,6 +24,18 @@ func SendCode(c *gin.Context) {
 	response.Response(c, resp, err)
 }
 
+// SendResume 发送简历
+func SendResume(c *gin.Context) {
+	ctx := zlog.GetCtxFromGin(c)
+	req, err := types.BindRequest[types.SendResumeRequest](c)
+	if err != nil {
+		return
+	}
+	zlog.CtxInfof(ctx, "发送简历请求: %v", req)
+	resp, err := logic.NewLoginLogic().SendResume(ctx, req)
+	response.Response(c, resp, err)
+}
+
 // Register 注册
 func Register(c *gin.Context) {
 	ctx := zlog.GetCtxFromGin(c)

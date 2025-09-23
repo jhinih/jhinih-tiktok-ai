@@ -27,7 +27,9 @@ type (
 		AICommonChat(ctx context.Context, in *AICommonChatRequest, opts ...grpc.CallOption) (*AICommonChatResponse, error)
 		AIVideoChat(ctx context.Context, in *AIVideoChatRequest, opts ...grpc.CallOption) (*AIVideoChatResponse, error)
 		AISendCode(ctx context.Context, in *AISendCodeRequest, opts ...grpc.CallOption) (*AISendCodeResponse, error)
+		AISendResume(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 		AIGetUserInfo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
+		AIGetVideo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 		AI(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 	}
 
@@ -57,9 +59,19 @@ func (m *defaultAi) AISendCode(ctx context.Context, in *AISendCodeRequest, opts 
 	return client.AISendCode(ctx, in, opts...)
 }
 
+func (m *defaultAi) AISendResume(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
+	client := ai.NewAiClient(m.cli.Conn())
+	return client.AISendResume(ctx, in, opts...)
+}
+
 func (m *defaultAi) AIGetUserInfo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
 	client := ai.NewAiClient(m.cli.Conn())
 	return client.AIGetUserInfo(ctx, in, opts...)
+}
+
+func (m *defaultAi) AIGetVideo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
+	client := ai.NewAiClient(m.cli.Conn())
+	return client.AIGetVideo(ctx, in, opts...)
 }
 
 func (m *defaultAi) AI(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {

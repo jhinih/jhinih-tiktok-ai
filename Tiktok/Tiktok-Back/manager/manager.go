@@ -44,7 +44,6 @@ func NewRouteManager(router *gin.Engine) *RouteManager {
 		MessageRoutes: router.Group("/api/message"),
 		FileRoutes:    router.Group("/api/file"),
 		VideosRoutes:  router.Group("/api/videos"),
-		ChatRoutes:    router.Group("/api/chat"),
 		ContactRoutes: router.Group("/api/contact"),
 		AIRoutes:      router.Group("/api/ai"),
 	}
@@ -86,12 +85,6 @@ func (rm *RouteManager) RegisterVideosRoutes(handler PathHandler) {
 	handler(rm.VideosRoutes)
 }
 
-// RegisterChat 注册聊天相关的路由处理函数
-// @param handler PathHandler - 路由处理函数
-func (rm *RouteManager) RegisterChatRoutes(handler PathHandler) {
-	handler(rm.ChatRoutes)
-}
-
 // RegisterContact 注册关系相关的路由处理函数
 // @param handler PathHandler - 路由处理函数
 func (rm *RouteManager) RegisterContactRoutes(handler PathHandler) {
@@ -122,8 +115,6 @@ func (rm *RouteManager) RegisterMiddleware(group string, middleware Middleware) 
 		rm.FileRoutes.Use(middleware())
 	case "videos":
 		rm.VideosRoutes.Use(middleware())
-	case "chat":
-		rm.ChatRoutes.Use(middleware())
 	case "contact":
 		rm.ChatRoutes.Use(middleware())
 	case "ai":

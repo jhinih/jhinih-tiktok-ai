@@ -21,8 +21,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/AIGetVideoChat",
+				Handler: AIGetVideoChatHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/AISendCodeChat",
 				Handler: AISendCodeChatHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/AISendResumeChat",
+				Handler: AISendResumeChatHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

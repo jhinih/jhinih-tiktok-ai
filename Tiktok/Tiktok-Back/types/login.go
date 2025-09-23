@@ -7,6 +7,12 @@ type SendCodeRequest struct {
 type SendCodeResponse struct {
 }
 
+type SendResumeRequest struct {
+	Email string `json:"email"`
+}
+
+type SendResumeResponse struct {
+}
 type RegisterRequest struct {
 	Email    string `json:"email"`
 	Code     string `json:"code"`

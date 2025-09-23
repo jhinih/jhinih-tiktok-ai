@@ -38,9 +38,19 @@ func (s *AiServer) AISendCode(ctx context.Context, in *ai.AISendCodeRequest) (*a
 	return l.AISendCode(in)
 }
 
+func (s *AiServer) AISendResume(ctx context.Context, in *ai.AIRequest) (*ai.AIResponse, error) {
+	l := logic.NewAISendResumeLogic(ctx, s.svcCtx)
+	return l.AISendResume(in)
+}
+
 func (s *AiServer) AIGetUserInfo(ctx context.Context, in *ai.AIRequest) (*ai.AIResponse, error) {
 	l := logic.NewAIGetUserInfoLogic(ctx, s.svcCtx)
 	return l.AIGetUserInfo(in)
+}
+
+func (s *AiServer) AIGetVideo(ctx context.Context, in *ai.AIRequest) (*ai.AIResponse, error) {
+	l := logic.NewAIGetVideoLogic(ctx, s.svcCtx)
+	return l.AIGetVideo(in)
 }
 
 func (s *AiServer) AI(ctx context.Context, in *ai.AIRequest) (*ai.AIResponse, error) {

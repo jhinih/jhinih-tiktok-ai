@@ -11,13 +11,13 @@ import (
 	"net/http"
 )
 
-type InputParams struct {
+type SendResumeInputParams struct {
 	Email string `json:"email" jsonschema:"description=the Email address"`
 }
 
-func SendCode(_ context.Context, params *InputParams) (string, error) {
+func SendResume(_ context.Context, params *SendResumeInputParams) (string, error) {
 	// 1. 目标接口
-	url := "http://localhost:8080/api/login/send-code"
+	url := "http://localhost:8080/api/login/send-resume"
 
 	// 3. 要 POST 的 JSON 数据
 	payload := map[string]any{"email": params.Email}
@@ -48,13 +48,13 @@ func SendCode(_ context.Context, params *InputParams) (string, error) {
 	json.NewDecoder(resp.Body).Decode(&s)
 	fmt.Printf("status: %d\nbody  :  %s\n", resp.StatusCode, s.Data.Answer)
 
-	return "发送验证码请求成功", nil
+	return "发送简历请求成功", nil
 }
 
-func CreateSendCodeTool() tool.InvokableTool {
-	sendCodeTool := utils.NewTool(&schema.ToolInfo{
-		Name: "send_code",
-		Desc: "send code to the Email address",
+func CreateSendResumeTool() tool.InvokableTool {
+	sendResumeTool := utils.NewTool(&schema.ToolInfo{
+		Name: "send_resume",
+		Desc: "send resume to the Email address",
 		ParamsOneOf: schema.NewParamsOneOfByParams(
 			map[string]*schema.ParameterInfo{
 				"email": &schema.ParameterInfo{
@@ -64,6 +64,6 @@ func CreateSendCodeTool() tool.InvokableTool {
 				},
 			},
 		),
-	}, SendCode)
-	return sendCodeTool
+	}, SendResume)
+	return sendResumeTool
 }

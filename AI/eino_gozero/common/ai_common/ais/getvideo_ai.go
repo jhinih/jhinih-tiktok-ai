@@ -3,7 +3,7 @@ package ais
 import (
 	"context"
 	"eino_gozero/common/ai_common/ais/aiUtils"
-	"eino_gozero/common/ai_common/ais/aiUtils/aiTools/user"
+	"eino_gozero/common/ai_common/ais/aiUtils/aiTools/videos"
 	"fmt"
 	ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
 	"github.com/cloudwego/eino/callbacks"
@@ -14,15 +14,15 @@ import (
 	"log"
 )
 
-func GetUserInfoAI(content string) string {
+func GetVideoAI(content string) string {
 	err := godotenv.Load() // 加载环境变量
 	if err != nil {
 		log.Fatal("加载环境变量失败")
 	}
 	ctx := context.Background()
 
-	GetUserInfoTool := user.CreateGetUserInfoTool()
-	info, err := GetUserInfoTool.Info(ctx)
+	GetVideoTool := videos.CreateGetVideoTool()
+	info, err := GetVideoTool.Info(ctx)
 
 	//扣子罗盘调试
 	client, err := cozeloop.NewClient()
@@ -42,9 +42,9 @@ func GetUserInfoAI(content string) string {
 		info,
 	}
 	tools := []tool.BaseTool{
-		GetUserInfoTool,
+		GetVideoTool,
 	}
-	outsidegraph := aiUtils.AIWithToolsJson("get_user_info", "你需要根据用户提供的用户ID查询用户信息", tools, infos)
+	outsidegraph := aiUtils.AIWithToolsJson("get_Video_info", "当用户需要视频时，你需要获取视频并交给用户", tools, infos)
 	// 编译
 	r, err := outsidegraph.Compile(ctx)
 	if err != nil {
@@ -55,8 +55,8 @@ func GetUserInfoAI(content string) string {
 		"content": content,
 	})
 	if err != nil {
-		log.Fatal("###############################\n", err.Error(), "\n##################################")
+		log.Fatal(err.Error())
 	}
-	fmt.Println(answer + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + "get_user_info")
+	fmt.Println(answer + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + "get_video")
 	return answer
 }

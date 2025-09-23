@@ -35,8 +35,14 @@ service ai {
 	@handler AISendCodeChat
 	post /AISendCodeChat (AIRequest) returns (AIResponse)
 
+	@handler AISendResumeChat
+	post /AISendResumeChat (AIRequest) returns (AIResponse)
+
 	@handler AIGetUserInfoChat
 	post /AIGetUserInfoChat (AIRequest) returns (AIResponse)
+
+	@handler AIGetVideoChat
+	post /AIGetVideoChat (AIRequest) returns (AIResponse)
 
 	@handler aiAllChat
 	post /aiAllChat (AIRequest) returns (AIResponse)

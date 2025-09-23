@@ -394,13 +394,16 @@ const file_ai_proto_rawDesc = "" +
 	"\x03Ask\x18\x02 \x01(\tR\x03Ask\"$\n" +
 	"\n" +
 	"AIResponse\x12\x16\n" +
-	"\x06Answer\x18\x01 \x01(\tR\x06Answer2\x99\x02\n" +
+	"\x06Answer\x18\x01 \x01(\tR\x06Answer2\xf5\x02\n" +
 	"\x02ai\x12A\n" +
 	"\fAICommonChat\x12\x17.ai.AICommonChatRequest\x1a\x18.ai.AICommonChatResponse\x12>\n" +
 	"\vAIVideoChat\x12\x16.ai.AIVideoChatRequest\x1a\x17.ai.AIVideoChatResponse\x12;\n" +
 	"\n" +
-	"AISendCode\x12\x15.ai.AISendCodeRequest\x1a\x16.ai.AISendCodeResponse\x12.\n" +
-	"\rAIGetUserInfo\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponse\x12#\n" +
+	"AISendCode\x12\x15.ai.AISendCodeRequest\x1a\x16.ai.AISendCodeResponse\x12-\n" +
+	"\fAISendResume\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponse\x12.\n" +
+	"\rAIGetUserInfo\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponse\x12+\n" +
+	"\n" +
+	"AIGetVideo\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponse\x12#\n" +
 	"\x02AI\x12\r.ai.AIRequest\x1a\x0e.ai.AIResponseB\x06Z\x04./aib\x06proto3"
 
 var (
@@ -430,15 +433,19 @@ var file_ai_proto_depIdxs = []int32{
 	0, // 0: ai.ai.AICommonChat:input_type -> ai.AICommonChatRequest
 	2, // 1: ai.ai.AIVideoChat:input_type -> ai.AIVideoChatRequest
 	4, // 2: ai.ai.AISendCode:input_type -> ai.AISendCodeRequest
-	6, // 3: ai.ai.AIGetUserInfo:input_type -> ai.AIRequest
-	6, // 4: ai.ai.AI:input_type -> ai.AIRequest
-	1, // 5: ai.ai.AICommonChat:output_type -> ai.AICommonChatResponse
-	3, // 6: ai.ai.AIVideoChat:output_type -> ai.AIVideoChatResponse
-	5, // 7: ai.ai.AISendCode:output_type -> ai.AISendCodeResponse
-	7, // 8: ai.ai.AIGetUserInfo:output_type -> ai.AIResponse
-	7, // 9: ai.ai.AI:output_type -> ai.AIResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
+	6, // 3: ai.ai.AISendResume:input_type -> ai.AIRequest
+	6, // 4: ai.ai.AIGetUserInfo:input_type -> ai.AIRequest
+	6, // 5: ai.ai.AIGetVideo:input_type -> ai.AIRequest
+	6, // 6: ai.ai.AI:input_type -> ai.AIRequest
+	1, // 7: ai.ai.AICommonChat:output_type -> ai.AICommonChatResponse
+	3, // 8: ai.ai.AIVideoChat:output_type -> ai.AIVideoChatResponse
+	5, // 9: ai.ai.AISendCode:output_type -> ai.AISendCodeResponse
+	7, // 10: ai.ai.AISendResume:output_type -> ai.AIResponse
+	7, // 11: ai.ai.AIGetUserInfo:output_type -> ai.AIResponse
+	7, // 12: ai.ai.AIGetVideo:output_type -> ai.AIResponse
+	7, // 13: ai.ai.AI:output_type -> ai.AIResponse
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

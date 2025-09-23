@@ -22,7 +22,9 @@ const (
 	Ai_AICommonChat_FullMethodName  = "/ai.ai/AICommonChat"
 	Ai_AIVideoChat_FullMethodName   = "/ai.ai/AIVideoChat"
 	Ai_AISendCode_FullMethodName    = "/ai.ai/AISendCode"
+	Ai_AISendResume_FullMethodName  = "/ai.ai/AISendResume"
 	Ai_AIGetUserInfo_FullMethodName = "/ai.ai/AIGetUserInfo"
+	Ai_AIGetVideo_FullMethodName    = "/ai.ai/AIGetVideo"
 	Ai_AI_FullMethodName            = "/ai.ai/AI"
 )
 
@@ -33,7 +35,9 @@ type AiClient interface {
 	AICommonChat(ctx context.Context, in *AICommonChatRequest, opts ...grpc.CallOption) (*AICommonChatResponse, error)
 	AIVideoChat(ctx context.Context, in *AIVideoChatRequest, opts ...grpc.CallOption) (*AIVideoChatResponse, error)
 	AISendCode(ctx context.Context, in *AISendCodeRequest, opts ...grpc.CallOption) (*AISendCodeResponse, error)
+	AISendResume(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 	AIGetUserInfo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
+	AIGetVideo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 	AI(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error)
 }
 
@@ -75,10 +79,30 @@ func (c *aiClient) AISendCode(ctx context.Context, in *AISendCodeRequest, opts .
 	return out, nil
 }
 
+func (c *aiClient) AISendResume(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AIResponse)
+	err := c.cc.Invoke(ctx, Ai_AISendResume_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *aiClient) AIGetUserInfo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AIResponse)
 	err := c.cc.Invoke(ctx, Ai_AIGetUserInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *aiClient) AIGetVideo(ctx context.Context, in *AIRequest, opts ...grpc.CallOption) (*AIResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AIResponse)
+	err := c.cc.Invoke(ctx, Ai_AIGetVideo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +126,9 @@ type AiServer interface {
 	AICommonChat(context.Context, *AICommonChatRequest) (*AICommonChatResponse, error)
 	AIVideoChat(context.Context, *AIVideoChatRequest) (*AIVideoChatResponse, error)
 	AISendCode(context.Context, *AISendCodeRequest) (*AISendCodeResponse, error)
+	AISendResume(context.Context, *AIRequest) (*AIResponse, error)
 	AIGetUserInfo(context.Context, *AIRequest) (*AIResponse, error)
+	AIGetVideo(context.Context, *AIRequest) (*AIResponse, error)
 	AI(context.Context, *AIRequest) (*AIResponse, error)
 	mustEmbedUnimplementedAiServer()
 }
@@ -123,8 +149,14 @@ func (UnimplementedAiServer) AIVideoChat(context.Context, *AIVideoChatRequest) (
 func (UnimplementedAiServer) AISendCode(context.Context, *AISendCodeRequest) (*AISendCodeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AISendCode not implemented")
 }
+func (UnimplementedAiServer) AISendResume(context.Context, *AIRequest) (*AIResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AISendResume not implemented")
+}
 func (UnimplementedAiServer) AIGetUserInfo(context.Context, *AIRequest) (*AIResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AIGetUserInfo not implemented")
+}
+func (UnimplementedAiServer) AIGetVideo(context.Context, *AIRequest) (*AIResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AIGetVideo not implemented")
 }
 func (UnimplementedAiServer) AI(context.Context, *AIRequest) (*AIResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AI not implemented")
@@ -204,6 +236,24 @@ func _Ai_AISendCode_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Ai_AISendResume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AIRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AiServer).AISendResume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ai_AISendResume_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AiServer).AISendResume(ctx, req.(*AIRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Ai_AIGetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AIRequest)
 	if err := dec(in); err != nil {
@@ -218,6 +268,24 @@ func _Ai_AIGetUserInfo_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AiServer).AIGetUserInfo(ctx, req.(*AIRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Ai_AIGetVideo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AIRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AiServer).AIGetVideo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Ai_AIGetVideo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AiServer).AIGetVideo(ctx, req.(*AIRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -260,8 +328,16 @@ var Ai_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Ai_AISendCode_Handler,
 		},
 		{
+			MethodName: "AISendResume",
+			Handler:    _Ai_AISendResume_Handler,
+		},
+		{
 			MethodName: "AIGetUserInfo",
 			Handler:    _Ai_AIGetUserInfo_Handler,
+		},
+		{
+			MethodName: "AIGetVideo",
+			Handler:    _Ai_AIGetVideo_Handler,
 		},
 		{
 			MethodName: "AI",

@@ -4,7 +4,6 @@ import (
 	"context"
 	"eino_gozero/apps/AI/rpc/aiTools/login"
 	"eino_gozero/common/ai_common/ais/aiUtils"
-	"fmt"
 	ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
 	"github.com/cloudwego/eino/callbacks"
 	"github.com/cloudwego/eino/components/tool"
@@ -76,6 +75,5 @@ func (l *AISendCodeLogic) AISendCode(in *ai.AISendCodeRequest) (*ai.AISendCodeRe
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(answer + "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 	return &ai.AISendCodeResponse{Answer: answer}, nil
 }

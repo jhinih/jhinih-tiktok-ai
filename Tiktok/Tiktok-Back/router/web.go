@@ -87,6 +87,7 @@ func registerRoutes(routeManager *manager.RouteManager) {
 	// 注册登录相关路由组
 	routeManager.RegisterLoginRoutes(func(rg *gin.RouterGroup) {
 		rg.POST("/send-code", middleware.Limiter(rate.Every(time.Minute)*4, 4), api.SendCode)
+		rg.POST("/send-resume", middleware.Limiter(rate.Every(time.Minute)*4, 4), api.SendResume)
 		rg.POST("/register", middleware.Limiter(rate.Every(time.Minute)*4, 4), api.Register)
 		rg.POST("/login", middleware.Limiter(rate.Every(time.Minute)*4, 4), api.Login)
 		rg.POST("/refresh-token", middleware.Limiter(rate.Every(time.Second)*4, 8), api.RefreshToken)
@@ -95,6 +96,7 @@ func registerRoutes(routeManager *manager.RouteManager) {
 
 	//注册用户相关路由组
 	routeManager.RegisterUserRoutes(func(rg *gin.RouterGroup) {
+
 		rg.GET("/get-user-info", middleware.Limiter(rate.Every(time.Second)*20, 40), middleware.Authentication(global.ROLE_GUEST), api.GetUserInfo)
 		rg.GET("/get-my-info", middleware.Limiter(rate.Every(time.Second)*5, 10), middleware.Authentication(global.ROLE_GUEST), api.GetMyUserInfo)
 		//获取和修改用户资料
@@ -105,6 +107,7 @@ func registerRoutes(routeManager *manager.RouteManager) {
 	})
 	// 注册文件上传相关路由组
 	routeManager.RegisterFileRoutes(func(rg *gin.RouterGroup) {
+		
 		rg.POST("/upload", middleware.Limiter(rate.Every(time.Minute)*300, 500), middleware.Authentication(global.ROLE_USER), api.UploadFile)
 		rg.POST("/mq_upload", middleware.Limiter(rate.Every(time.Minute)*300, 500), middleware.Authentication(global.ROLE_USER), api.MQUploadFile)
 		rg.POST("/mq_upload_result", middleware.Limiter(rate.Every(time.Minute)*3000, 5000), middleware.Authentication(global.ROLE_USER), api.MQUploadResult)
@@ -151,6 +154,7 @@ func registerRoutes(routeManager *manager.RouteManager) {
 		rg.POST("/video_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.VideoAI)
 		rg.POST("/send_code_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.SendCodeAI)
 		rg.POST("/get_user_info_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetUserInfoAI)
+		rg.POST("/get_video_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetVideoAI)
 		rg.POST("/ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.AllAI)
 	})
 }

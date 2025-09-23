@@ -14,15 +14,15 @@ import (
 	"log"
 )
 
-func SendCodeAI(content string) string {
+func SendResumeAI(content string) string {
 	err := godotenv.Load() // 加载环境变量
 	if err != nil {
 		log.Fatal("加载环境变量失败")
 	}
 	ctx := context.Background()
 
-	SendCodeTool := login.CreateSendCodeTool()
-	info, err := SendCodeTool.Info(ctx)
+	SendResumeTool := login.CreateSendResumeTool()
+	info, err := SendResumeTool.Info(ctx)
 
 	//扣子罗盘调试
 	client, err := cozeloop.NewClient()
@@ -42,9 +42,9 @@ func SendCodeAI(content string) string {
 		info,
 	}
 	tools := []tool.BaseTool{
-		SendCodeTool,
+		SendResumeTool,
 	}
-	outsidegraph := aiUtils.AIWithTools("send_code", "你需要根据用户提供的邮箱来调用工具发送验证码", tools, infos)
+	outsidegraph := aiUtils.AIWithTools("send_resume", "你需要根据用户提供的邮箱来调用工具发送简历", tools, infos)
 	// 编译
 	r, err := outsidegraph.Compile(ctx)
 	if err != nil {

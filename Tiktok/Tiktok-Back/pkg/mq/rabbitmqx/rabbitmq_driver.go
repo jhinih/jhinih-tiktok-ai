@@ -14,27 +14,6 @@ import (
 	"sync/atomic"
 )
 
-//type RabbitMQ struct {
-//}
-//
-//// InitMQ 初始化
-//func (m *RabbitMQ) InitMQ(config configs.Config) (*amqp.Connection, error) {
-//	dsn := m.GetMQDsn(config)
-//	// 连接 MQ
-//	conn, err := amqp.Dial(dsn)
-//	if err != nil {
-//		zlog.Panicf("RabbitMQ无法连接！: %v", err)
-//	}
-//	zlog.Infof("RabbitMQ连接成功！")
-//	return conn, nil
-//}
-//func (m *RabbitMQ) GetMQDsn(config configs.Config) string {
-//	return config.MQ.RabbitMQ.Dsn
-//}
-//func NewRabbitMQ() mq.MQ {
-//	return &RabbitMQ{}
-//}
-
 type RabbitMQ struct {
 	conn  *amqp.Connection
 	pool  []*amqp.Channel
@@ -74,21 +53,21 @@ func (r *RabbitMQ) InitMQ(config configs.Config) error {
 	global.RabbitMQ = r
 
 	zlog.Infof("RabbitMQ 初始化成功，channel 池大小：%d", poolSize)
-	return r.declareInfrastructure()
+	return r.initProducer()
 }
 
-// 基础设施 =  exchange + queue + binding 映射表
-func (r *RabbitMQ) declareInfrastructure() error {
+// 初始化生产者
+func (r *RabbitMQ) initProducer() error {
 	infra := []struct {
 		Exchange string
 		Type     string
 		Queue    string
 		Key      string
 	}{
+		//交换器，队列
 		{"upload", "direct", "upload_queue", "upload_key"},
 		{"email", "direct", "email_queue", "email_key"},
 		{"order", "topic", "order_event", "order.created"},
-		// 有新业务继续加一行，不改业务代码
 	}
 
 	ch := r.getChannel()
@@ -165,7 +144,6 @@ func (r *RabbitMQ) Consume(queue string, handler func(msg []byte) error) error {
 	return nil
 }
 
-// pkg/mq/rabbitmqx/rabbitmqx.go
 func (r *RabbitMQ) Close() error {
 	// 1. 关闭所有 channel
 	for _, ch := range r.pool {

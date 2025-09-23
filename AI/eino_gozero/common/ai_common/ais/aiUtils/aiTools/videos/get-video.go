@@ -1,4 +1,4 @@
-package user
+package videos
 
 import (
 	"context"
@@ -13,35 +13,31 @@ import (
 )
 
 type Data struct {
-	User User `json:"user"`
+	Video Video `json:"Video"`
 }
-type User struct {
-	ID            string    `json:"id" gorm:"column:id;primaryKey;type:bigint"`
-	CreatedTime   string    `gorm:"column:created_time;type:bigint"`
-	UpdatedTime   string    `gorm:"column:updated_time;type:bigint"`
-	Username      string    `json:"username" gorm:"column:username;type:varchar(255);comment:用户名"`
-	Password      string    `json:"password" gorm:"column:password;type:varchar(255);comment:密码"`
-	Email         string    `json:"email" gorm:"column:email;type:varchar(255);comment:邮箱"`
-	Avatar        string    `json:"avatar" gorm:"column:avatar;type:varchar(255);comment:头像URL"`
-	Role          string    `json:"role" gorm:"column:role;type:int;comment:权限等级"`
-	Phone         string    `gorm:"column:phone;type:varchar(20);comment:手机号" valid:"matches(^1[3-9]{1}\\d{9}$)"`
-	ClientIp      string    `gorm:"column:client_ip;type:varchar(50);comment:客户端IP"`
-	ClientPort    string    `gorm:"column:client_port;type:varchar(20);comment:客户端端口"`
-	LoginTime     time.Time `gorm:"column:login_time;comment:登录时间"`
-	HeartbeatTime time.Time `gorm:"column:heartbeat_time;comment:心跳时间"`
-	LoginOutTime  time.Time `gorm:"column:login_out_time;comment:登出时间" json:"login_out_time"`
-	IsLogout      bool      `gorm:"column:is_logout;comment:是否登出"`
-	DeviceInfo    string    `gorm:"column:device_info;type:varchar(255);comment:设备信息"`
-	Bio           string    `gorm:"column:bio;type:varchar(255);comment:个人简介"`
+type Video struct {
+	ID          string `json:"id" gorm:"column:id;primaryKey;type:bigint;type:bigint"`
+	CreatedTime string `gorm:"column:created_time;type:bigint"`
+	UpdatedTime string `gorm:"column:updated_time;type:bigint"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+	Cover       string `json:"cover"`
+	Likes       string `json:"likes" gorm:"not null;column:likes;type:int;comment:点赞数"`
+	Comments    string `json:"comments" gorm:"not null;column:comments;type:int;comment:评论数"`
+	Shares      string `json:"shares" gorm:"not null;column:shares;type:int;comment:分享数"`
+	VideoID     string `json:"Video_id" gorm:"column:Video_id;type:bigint;comment:用户ID"`
+	PublishTime time.Time
+	Type        string `json:"type" gorm:"column:type;type:varchar(63);comment:类型"`
+	IsPrivate   bool   `json:"is_private" gorm:"not null;column:is_private;type:bool;comment:是否私密"`
 }
-type GetUserInfoInputParams struct {
-	ID string `json:"id" jsonschema:"description=the id of the user"`
+type GetVideoInputParams struct {
 }
 
-func GetUserInfo(ctx context.Context, params *GetUserInfoInputParams) (map[string]any, error) {
+func GetVideo(ctx context.Context, params *GetVideoInputParams) (map[string]any, error) {
 
 	// 1. 目标接口
-	url := "http://localhost:8080/api/user/get-user-info?user_id=" + params.ID
+	url := "http://localhost:8080/api/videos"
 	//获取 JWT
 	jwt, _ := aiUtils.GetToken()
 	// 4. 创建请求
@@ -69,40 +65,36 @@ func GetUserInfo(ctx context.Context, params *GetUserInfoInputParams) (map[strin
 	if err := json.Unmarshal(tmp.Data, &d); err != nil {
 		return nil, err
 	}
-	u := d.User
+	u := d.Video
+	fmt.Println("$%^%$#$%$#$%^%$##$%^%$#$%^%$#@")
+	fmt.Println(u)
+	fmt.Println("$%^%$#$%$#$%^%$##$%^%$#$%^%$#@")
 
 	respMap := map[string]any{
-		"id":             u.ID,
-		"username":       u.Username,
-		"password":       u.Password,
-		"email":          u.Email,
-		"avatar":         u.Avatar,
-		"role":           u.Role,
-		"phone":          u.Phone,
-		"client_ip":      u.ClientIp,
-		"client_port":    u.ClientPort,
-		"login_time":     u.LoginTime.Format("2006-01-02 15:04:05"),
-		"heartbeat_time": u.HeartbeatTime.Format("2006-01-02 15:04:05"),
-		"login_out_time": u.LoginOutTime.Format("2006-01-02 15:04:05"),
-		"is_logout":      u.IsLogout,
-		"bio":            u.Bio,
-		"device_info":    u.DeviceInfo,
+		"id":           u.ID,
+		"created_time": u.CreatedTime,
+		"updated_time": u.UpdatedTime,
+		"title":        u.Title,
+		"description":  u.Description,
+		"url":          u.URL,
+		"cover":        u.Cover,
+		"likes":        u.Likes,
+		"comments":     u.Comments,
+		"shares":       u.Shares,
+		"video_id":     u.VideoID,
+		"publish_time": u.PublishTime,
+		"type":         u.Type,
+		"is_private":   u.IsPrivate,
 	}
 	return respMap, nil
 }
-func CreateGetUserInfoTool() tool.InvokableTool {
-	GetUserInfoTool := utils.NewTool(&schema.ToolInfo{
-		Name: "GetUserInfo",
-		Desc: "Get User Info By ID",
+func CreateGetVideoTool() tool.InvokableTool {
+	GetVideoTool := utils.NewTool(&schema.ToolInfo{
+		Name: "GetVideo",
+		Desc: "Get Videos",
 		ParamsOneOf: schema.NewParamsOneOfByParams(
-			map[string]*schema.ParameterInfo{
-				"id": &schema.ParameterInfo{
-					Type:     schema.String,
-					Desc:     "the id of the user",
-					Required: true,
-				},
-			},
+			map[string]*schema.ParameterInfo{},
 		),
-	}, GetUserInfo)
-	return GetUserInfoTool
+	}, GetVideo)
+	return GetVideoTool
 }

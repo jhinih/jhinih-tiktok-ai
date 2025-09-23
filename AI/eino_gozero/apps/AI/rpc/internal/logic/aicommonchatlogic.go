@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"eino_gozero/common/ai_common/ais"
 	"eino_gozero/common/ai_common/ais/aiUtils"
 	ccb "github.com/cloudwego/eino-ext/callbacks/cozeloop"
 	"github.com/cloudwego/eino/callbacks"
@@ -60,6 +59,6 @@ func (l *AICommonChatLogic) AICommonChat(in *ai.AICommonChatRequest) (*ai.AIComm
 	if err != nil {
 		panic(err)
 	}
-	go ais.Test1()
+	//go ais.Test1()
 	return &ai.AICommonChatResponse{Answer: answer}, nil
 }
