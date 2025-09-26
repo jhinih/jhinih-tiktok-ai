@@ -59,15 +59,6 @@ func AIWithToolsJson(name, content string, tools []tool.BaseTool, infos []*schem
 		}
 		// 取最后一个消息作为最终结果
 		return input[len(input)-1], nil
-		//for _, msg := range input {
-		//	if msg.Role == schema.User && msg.Content != "" {
-		//		fmt.Println(msg)
-		//		fmt.Println("___________________________________________________________________________________________")
-		//		return msg, nil
-		//	}
-		//	fmt.Println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
-		//}
-		//return nil, fmt.Errorf("no tool result message found")
 	})
 
 	//加入节点

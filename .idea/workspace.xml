@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e75ec760-5302-4c23-a336-7afd3bd28161" name="更改" comment="jhinih-tiktok-ai&#10;v0.0.2" />
+    <list default="true" id="e75ec760-5302-4c23-a336-7afd3bd28161" name="更改" comment="jhinih-tiktok-ai&#10;v0.0.1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/ai_with_tool_json.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/ai_with_tool_json.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../go" />
   <component name="Git.Settings">
@@ -40,12 +50,16 @@
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="32wprlEwSDF2hTsARyPppZOpOBh" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.GoLinterPluginOnboarding&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,
@@ -54,10 +68,10 @@
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/HuaweiMoveData/Users/kings/Desktop/jian_li&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/HuaweiMoveData/Users/kings/Desktop/jian_li/AI/eino_gozero/common/ai_common/ais&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -65,6 +79,15 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\AI\eino_gozero\common\ai_common\ais" />
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\AI\eino_gozero\common\ai_common\ais\aiUtils\aiTools\login" />
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back\cmd" />
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back" />
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back\cmd\gmail" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -110,9 +133,9 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="jhinih-tiktok-ai&#10;v0.0.1" />
     <MESSAGE value="jhinih-tiktok-ai&#10;v0.0.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="jhinih-tiktok-ai&#10;v0.0.2" />
+    <MESSAGE value="jhinih-tiktok-ai&#10;v0.0.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="jhinih-tiktok-ai&#10;v0.0.1" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
