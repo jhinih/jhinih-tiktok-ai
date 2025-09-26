@@ -1,0 +1,53 @@
+type AICommonChatRequest {
+	Ask string `json:"ask"`
+}
+
+type AICommonChatResponse {
+	Answer string `json:"answer"`
+}
+
+type AIVideoChatRequest {
+	Ask string `json:"ask"`
+}
+
+type AIVideoChatResponse {
+	Answer string `json:"answer"`
+}
+
+type AIRequest {
+	Ask string `json:"ask"`
+}
+
+type AIResponse {
+	Answer string `json:"answer"`
+}
+
+@server (
+	prefix: /api/ai
+)
+service ai {
+	@handler aiCommonChat
+	post /aiCommonChat (AICommonChatRequest) returns (AICommonChatResponse)
+
+	@handler aiVideoChat
+	post /aiVideoChat (AIVideoChatRequest) returns (AIVideoChatResponse)
+
+	@handler AISendCodeChat
+	post /AISendCodeChat (AIRequest) returns (AIResponse)
+
+	@handler AISendResumeChat
+	post /AISendResumeChat (AIRequest) returns (AIResponse)
+
+	@handler AIGetUserInfoChat
+	post /AIGetUserInfoChat (AIRequest) returns (AIResponse)
+
+	@handler AIGetVideoChat
+	post /AIGetVideoChat (AIRequest) returns (AIResponse)
+
+	@handler aiAllChat
+	post /aiAllChat (AIRequest) returns (AIResponse)
+}
+
+// goctl api go -api ai.api -dir . --home ../../../template
+//# 在任意空白目录执行，只生成 template 文件夹
+//goctl template init --home .

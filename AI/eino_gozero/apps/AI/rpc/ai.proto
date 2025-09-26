@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package ai;
+
+option go_package = "./ai";
+
+message AICommonChatRequest{
+  string Ask=1;
+}
+message AICommonChatResponse{
+  string Answer=1;
+}
+message AIVideoChatRequest{
+  string Ask=2;
+}
+message AIVideoChatResponse{
+  string Answer=1;
+}
+message AISendCodeRequest{
+  string Ask=2;
+}
+message AISendCodeResponse{
+  string Answer=1;
+}
+message AIRequest{
+  string Ask=2;
+}
+message AIResponse{
+  string Answer=1;
+}
+
+service ai{
+  rpc AICommonChat(AICommonChatRequest)returns(AICommonChatResponse);
+  rpc AIVideoChat(AIVideoChatRequest)returns(AIVideoChatResponse);
+
+
+  rpc AISendCode(AISendCodeRequest)returns(AISendCodeResponse);
+  rpc AISendResume(AIRequest)returns(AIResponse);
+  rpc AIGetUserInfo(AIRequest)returns(AIResponse);
+  rpc AIGetVideo(AIRequest)returns(AIResponse);
+
+
+  rpc AI(AIRequest)returns(AIResponse);
+}
+
+
+// goctl rpc protoc ai.proto --go_out=./types --go-grpc_out=./types --zrpc_out=.
+// goctl rpc protoc ai.proto --go_out=./types --go-grpc_out=./types --zrpc_out=. --home ../../../template

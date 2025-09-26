@@ -1,0 +1,23 @@
+Name: {{.serviceName}}
+Host: {{.host}}
+Port: {{.port}}
+Auth:
+  AccessSecret: jhinihhinihj
+  AccessExpire: 360000
+log:
+  Encoding: plain
+  TimeFormat: 2006-01-02 15:04:00
+  Stat: false
+Mysql:
+  DataSource: root:123456@tcp(127.0.0.1:3306)/eino_gozero?charset=utf8mb4&parseTime=True&loc=Local
+redis:
+  enable: true
+  host: localhost
+  port: 6379
+  password: ""
+  db: 0
+AIRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: ai.rpc
