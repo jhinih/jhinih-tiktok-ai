@@ -121,7 +121,7 @@ func WebsocketAPI(c *gin.Context) {
 		}
 	}()
 
-	go Test()
+	//go Test()
 }
 
 func Test() {

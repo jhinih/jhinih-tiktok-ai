@@ -107,7 +107,7 @@ func registerRoutes(routeManager *manager.RouteManager) {
 	})
 	// 注册文件上传相关路由组
 	routeManager.RegisterFileRoutes(func(rg *gin.RouterGroup) {
-		
+
 		rg.POST("/upload", middleware.Limiter(rate.Every(time.Minute)*300, 500), middleware.Authentication(global.ROLE_USER), api.UploadFile)
 		rg.POST("/mq_upload", middleware.Limiter(rate.Every(time.Minute)*300, 500), middleware.Authentication(global.ROLE_USER), api.MQUploadFile)
 		rg.POST("/mq_upload_result", middleware.Limiter(rate.Every(time.Minute)*3000, 5000), middleware.Authentication(global.ROLE_USER), api.MQUploadResult)
@@ -156,5 +156,19 @@ func registerRoutes(routeManager *manager.RouteManager) {
 		rg.POST("/get_user_info_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetUserInfoAI)
 		rg.POST("/get_video_ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetVideoAI)
 		rg.POST("/ai", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.AllAI)
+	})
+
+	//注册商城相关路由组
+	routeManager.RegisterShopRoutes(func(rg *gin.RouterGroup) {
+		//rg.POST("/create-order", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.CreateOrder)
+		rg.GET("/get-order-info", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetOrderInfo)
+		rg.POST("/create-order", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.CreateOrder)
+
+		rg.GET("/get-good-info", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetGoodInfo)
+		rg.POST("/create-good", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.CreateGood)
+
+		rg.GET("/get-cart-info", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.GetCartInfo)
+		rg.POST("/create-cart", middleware.Limiter(rate.Every(time.Minute)*20, 40), middleware.Authentication(global.ROLE_USER), api.CreateCart)
+
 	})
 }

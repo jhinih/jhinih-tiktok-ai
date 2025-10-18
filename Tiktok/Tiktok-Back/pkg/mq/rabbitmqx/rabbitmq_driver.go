@@ -105,18 +105,18 @@ func (r *RabbitMQ) Consume(queue string, handler func(msg []byte) error) error {
 	}
 	deliveries, err := ch.Consume(
 		queue,
-		"",    // consumer tag
-		false, // manual ack
-		false, // exclusive
-		false, // no local
-		false, // no wait
+		"",
+		false,
+		false,
+		false,
+		false,
 		nil,
 	)
 	if err != nil {
 		return err
 	}
 
-	wp := workerpoolUtils.New(core, capacity) // 你用过的池
+	wp := workerpoolUtils.New(core, capacity)
 	defer wp.Stop()
 
 	// 优雅退出
@@ -124,7 +124,7 @@ func (r *RabbitMQ) Consume(queue string, handler func(msg []byte) error) error {
 	defer cancel()
 
 	go func() {
-		<-global.CtxDone() // 你程序退出时调用
+		<-global.CtxDone() // 程序退出时调用
 		cancel()
 		ch.Close()
 	}()

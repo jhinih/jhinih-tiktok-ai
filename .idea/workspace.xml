@@ -5,8 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e75ec760-5302-4c23-a336-7afd3bd28161" name="更改" comment="jhinih-tiktok-ai&#10;v0.0.1">
+      <change afterPath="$PROJECT_DIR$/AI/eino_gozero/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AI/eino_gozero/config/loadenv.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/docker/RabbitMQ/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/docker/RabbitMQ/enabled_plugins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/internal/api/shop.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/logic/shop.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/model/cart.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/model/good.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/model/order.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/repository/shop.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/request/shop.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/types/shop.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/ai_with_tool_json.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/ai_with_tool_json.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/ai.api" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/ai.api" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/internal/handler/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/internal/handler/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/internal/types/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/api/internal/types/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/aiTools/user/get-user-info.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/aiTools/user/get-user-info.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/all.md" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/all.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/common.md" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/common.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/internal/logic/ailogic.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/internal/logic/ailogic.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/send_code.md" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/apps/AI/rpc/send_code.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/aiTools/contact/add-friend.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/aiTools/contact/add-friend.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/aiTools/user/get-user-info.go" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/common/ai_common/ais/aiUtils/aiTools/user/get-user-info.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AI/eino_gozero/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/AI/eino_gozero/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/cmd/flags/enter.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/cmd/flags/enter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/cmd/mq/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/cmd/mq/file.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/configs/configs.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/configs/configs.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/global/const.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/global/const.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/initialize/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/initialize/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/internal/api/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/internal/api/file.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/internal/api/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/internal/api/websocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/logic/ai.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/logic/ai.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/logic/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/logic/websocket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/manager/manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/manager/manager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/pkg/mq/rabbitmqx/rabbitmq_driver.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/pkg/mq/rabbitmqx/rabbitmq_driver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/repository/video.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/repository/video.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/router/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/router/web.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tiktok/Tiktok-Back/types/ai.go" beforeDir="false" afterPath="$PROJECT_DIR$/Tiktok/Tiktok-Back/types/ai.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +111,7 @@
     &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/HuaweiMoveData/Users/kings/Desktop/jian_li/AI/eino_gozero/common/ai_common/ais&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/kings&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -81,11 +121,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\jhinih-tiktok-ai" />
       <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\AI\eino_gozero\common\ai_common\ais" />
       <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\AI\eino_gozero\common\ai_common\ais\aiUtils\aiTools\login" />
       <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back\cmd" />
       <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back" />
-      <recent name="D:\HuaweiMoveData\Users\kings\Desktop\jian_li\Tiktok\Tiktok-Back\cmd\gmail" />
     </key>
   </component>
   <component name="SharedIndexes">

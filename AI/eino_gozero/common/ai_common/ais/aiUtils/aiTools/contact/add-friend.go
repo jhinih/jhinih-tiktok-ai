@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"eino_gozero/common/ai_common/ais/aiUtils"
+	_ "eino_gozero/config"
 	"encoding/json"
 	"fmt"
 	"github.com/cloudwego/eino/components/tool"

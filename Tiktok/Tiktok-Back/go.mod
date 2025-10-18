@@ -5,6 +5,7 @@ go 1.24.2
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v3.0.2+incompatible
 	github.com/antonfisher/nested-logrus-formatter v1.3.1
+	github.com/coze-dev/coze-go v0.0.0-20250904083123-d5e3dc1610ff
 	github.com/dlclark/regexp2 v1.11.5
 	github.com/elastic/go-elasticsearch/v9 v9.1.0
 	github.com/emersion/go-imap/v2 v2.0.0-beta.7
@@ -59,6 +60,7 @@ require (
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect

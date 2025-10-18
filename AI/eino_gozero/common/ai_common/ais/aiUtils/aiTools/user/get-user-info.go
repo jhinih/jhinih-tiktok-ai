@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"eino_gozero/common/ai_common/ais/aiUtils"
 	"encoding/json"
 	"fmt"
 	"github.com/cloudwego/eino/components/tool"
@@ -43,7 +42,9 @@ func GetUserInfo(ctx context.Context, params *GetUserInfoInputParams) (map[strin
 	// 1. 目标接口
 	url := "http://localhost:8080/api/user/get-user-info?user_id=" + params.ID
 	//获取 JWT
-	jwt, _ := aiUtils.GetToken()
+	//jwt, _ := aiUtils.GetToken()
+	meta := ctx.Value("Authorization")
+	jwt := meta.(string)
 	// 4. 创建请求
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bearer "+jwt)

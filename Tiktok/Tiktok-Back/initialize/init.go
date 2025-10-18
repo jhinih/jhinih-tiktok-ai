@@ -28,8 +28,9 @@ func Init() {
 	// 初始化数据库
 	InitDataBase(*global.Config)
 	InitRedis(*global.Config)
+
 	// 初始化消息队列
-	InitMQ(*global.Config)
+	//InitMQ(*global.Config)
 	// 初始化全局雪花ID生成器
 	InitSnowflake()
 	// 开启定时任务

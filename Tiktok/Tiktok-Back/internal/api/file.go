@@ -93,9 +93,7 @@ func UploadFile(c *gin.Context) {
 	response.Response(c, resp, nil)
 }
 
-const tmpDir = "./tmp_upload"
-
-func init() { os.MkdirAll(tmpDir, 0755) }
+func init() { os.MkdirAll(global.TMPDIR, 0755) }
 
 // UploadFile 入口：只落盘+发 MQ
 func MQUploadFile(c *gin.Context) {
@@ -118,7 +116,7 @@ func MQUploadFile(c *gin.Context) {
 
 	ID := global.SnowflakeNode.Generate().String()
 	ext := filepath.Ext(header.Filename)
-	tmpPath := filepath.Join(tmpDir, ID+ext)
+	tmpPath := filepath.Join(global.TMPDIR, ID+ext)
 
 	out, err := os.Create(tmpPath)
 	if err != nil {

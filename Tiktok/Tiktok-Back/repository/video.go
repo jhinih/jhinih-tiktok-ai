@@ -20,14 +20,13 @@ func NewVideosRequest(db *gorm.DB) *VideosRequest {
 
 // 获取视频
 func (r *VideosRequest) GetVideoByVideoID(videoId int64) (model.Video, error) {
-	var tableVideo model.Video
-	tableVideo.ID = videoId
-	//Init()
-	result := r.DB.First(&tableVideo)
+	var Video model.Video
+	Video.ID = videoId
+	result := r.DB.First(&Video)
 	if result.Error != nil {
-		return tableVideo, result.Error
+		return Video, result.Error
 	}
-	return tableVideo, nil
+	return Video, nil
 
 }
 

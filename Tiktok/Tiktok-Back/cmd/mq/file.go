@@ -20,64 +20,6 @@ import (
 )
 
 func main() {
-	//// 初始化
-	//initialize.Init()
-	////ch := rabbitmqUtils.RabbitMQChannel()
-	//ch := initialize.GetChannel()
-	//// 简单只开一个 channel 消费
-	//deliveries, _ := ch.Consume(
-	//	"upload_queue",
-	//	"",
-	//	false,
-	//	false,
-	//	false,
-	//	false,
-	//	nil,
-	//)
-	//// 创建动态池
-	//p := workerpoolUtils.New(core, capacity)
-	//defer p.Stop()
-	//
-	//ctx, cancel := context.WithCancel(context.Background())
-	//defer cancel()
-	//
-	//var wg sync.WaitGroup
-	//for i := 0; i < runtime.NumCPU(); i++ {
-	//	wg.Add(1)
-	//	go func() {
-	//		defer wg.Done()
-	//		for {
-	//			select {
-	//			case <-ctx.Done():
-	//				return
-	//			case d, ok := <-deliveries:
-	//				if !ok {
-	//					return
-	//				}
-	//				// 拷贝一份，避免并发读写
-	//				msg := d
-	//				p.Submit(func() {
-	//					process(msg)
-	//				})
-	//			}
-	//		}
-	//	}()
-	//}
-	//wg.Wait()
-	////
-	////for d := range deliveries {
-	////	var task types.UploadTask
-	////	json.Unmarshal(d.Body, &task)
-	////	if err := handle(task); err == nil {
-	////		d.Ack(false)
-	////	} else {
-	////		d.Nack(false, true) // 失败重入队
-	////	}
-	////}
-	//// 工程进入前夕，释放资源
-	//defer initialize.Eve()
-	//zlog.Infof("程序运行完成！")
-
 	initialize.Init()
 
 	err := global.RabbitMQ.Consume("upload_queue", func(body []byte) error {
@@ -95,22 +37,6 @@ func main() {
 	<-global.CtxDone()
 	initialize.Eve()
 }
-
-//
-//func process(d amqp.Delivery) {
-//	var task types.UploadTask
-//	if err := json.Unmarshal(d.Body, &task); err != nil {
-//		log.Printf("垃圾信息: %v", err)
-//		d.Nack(false, false) // 无法解析直接丢弃
-//		return
-//	}
-//	if err := handle(task); err == nil {
-//		d.Ack(false)
-//	} else {
-//		// 失败重新入队
-//		d.Nack(false, true)
-//	}
-//}
 
 func handle(task types.UploadTask) error {
 	ctx := context.Background()
@@ -154,6 +80,7 @@ func handle(task types.UploadTask) error {
 		},
 		5*time.Minute,
 	)
+	//SSE
 	resp := types.UploadResult{ID: task.ID, OK: true, URL: url}
 
 	manager.Push(task.ID, resp)

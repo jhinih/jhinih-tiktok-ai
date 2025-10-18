@@ -24,6 +24,7 @@ type AIResponse {
 
 @server (
 	prefix: /api/ai
+	auth:   ture
 )
 service ai {
 	@handler aiCommonChat

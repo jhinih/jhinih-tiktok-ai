@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine   # 带管理插件的轻量镜像
+    container_name: rabbitmq
+    hostname: rabbitmq                       # 集群时有用
+    restart: unless-stopped
+    ports:
+      - "5672:5672"      # AMQP 端口
+      - "15672:15672"    # WebUI 端口
+    environment:
+      # 默认 guest/guest 只能本机登录，这里新建管理员账号
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: 123456
+      RABBITMQ_DEFAULT_VHOST: /demo
+      # 如果想开集群，可再指定
+      # RABBITMQ_ERLANG_COOKIE: secretcookie
+    volumes:
+      - ./data:/var/lib/rabbitmq/mnesia     # 数据持久化
+      - ./enabled_plugins:/etc/rabbitmq/enabled_plugins  # 插件列表
+      # - ./definitions.json:/etc/rabbitmq/definitions.json  # 可选：一次性导入用户/队列等
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    networks:
+      - rabbitmq_net
+
+  # 如果想用延迟队列插件，可再打一个带插件的镜像（多阶段构建）
+  # 这里直接用社区打包好的镜像，按需打开：
+  # rabbitmq-delayed:
+  #   image: heidiks/rabbitmq-delayed-message-exchange:3.12.1-management
+  #   container_name: rabbitmq-delayed
+  #   ... 同上端口/环境/卷 ...
+
+networks:
+  rabbitmq_net:
+    driver: bridge

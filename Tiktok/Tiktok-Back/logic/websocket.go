@@ -8,10 +8,15 @@ import (
 	"Tiktok/types"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/coze-dev/coze-go"
 	"github.com/gorilla/websocket"
 	"github.com/redis/go-redis/v9"
+	"io"
+	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -49,6 +54,12 @@ func (l *WebsocketLogic) HandleMessage(message string) {
 		l.handleTypeAIMessage(Cindata.Content)
 	case "common_ai":
 		l.handleTypeAICommonMessage(Cindata.Content)
+
+	case "coze_\"7555106602756947987\"":
+		l.handleTypeCozeMessage(Cindata.Content)
+	case "coze_\"7555106602756947987\"_stream":
+		l.handleTypeCozeStreamMessage(Cindata.Content)
+
 	case "history":
 		l.handleTypeGetHistory(Cindata.Content)
 	default:
@@ -192,7 +203,70 @@ func (l *WebsocketLogic) handleTypeAICommonMessage(content string) {
 	manager.WebsocketManager.Broadcast <- msg
 	go l.AICommonChat(Contentdata.Content)
 }
-
+func (l *WebsocketLogic) handleTypeCozeMessage(content string) {
+	// 处理消息内容
+	var Contentdata model.ChatMessage
+	err := json.Unmarshal([]byte(content), &Contentdata)
+	if err != nil {
+		zlog.Warnf("websocket 接受消息格式错误: %s", err)
+		return
+	}
+	// 打包信息内容
+	id := global.SnowflakeNode.Generate().Int64()
+	resp := model.OutMessage{
+		Type:      "coze",
+		ID:        id,
+		Content:   Contentdata.Content,
+		UserID:    strconv.FormatInt(l.userID, 10),
+		Timestamp: time.Now().UnixMilli(),
+	}
+	SaveChatMessage(context.Background(), resp)
+	respJson, err := json.Marshal(resp)
+	if err != nil {
+		zlog.Warnf("websocket 打包消息格式错误: %s", err)
+		return
+	}
+	// 处理消息
+	msg := model.ChatMessage{
+		ToType:  Contentdata.ToType,
+		Content: string(respJson),
+		To:      2,
+	}
+	manager.WebsocketManager.Broadcast <- msg
+	go l.CozeChat(Contentdata.Content, "7555106602756947987")
+}
+func (l *WebsocketLogic) handleTypeCozeStreamMessage(content string) {
+	// 处理消息内容
+	var Contentdata model.ChatMessage
+	err := json.Unmarshal([]byte(content), &Contentdata)
+	if err != nil {
+		zlog.Warnf("websocket 接受消息格式错误: %s", err)
+		return
+	}
+	// 打包信息内容
+	id := global.SnowflakeNode.Generate().Int64()
+	resp := model.OutMessage{
+		Type:      "coze",
+		ID:        id,
+		Content:   Contentdata.Content,
+		UserID:    strconv.FormatInt(l.userID, 10),
+		Timestamp: time.Now().UnixMilli(),
+	}
+	SaveChatMessage(context.Background(), resp)
+	respJson, err := json.Marshal(resp)
+	if err != nil {
+		zlog.Warnf("websocket 打包消息格式错误: %s", err)
+		return
+	}
+	// 处理消息
+	msg := model.ChatMessage{
+		ToType:  Contentdata.ToType,
+		Content: string(respJson),
+		To:      2,
+	}
+	manager.WebsocketManager.Broadcast <- msg
+	go l.CozeStreamChat(Contentdata.Content, "7555106602756947987")
+}
 func SaveChatMessage(ctx context.Context, message model.OutMessage) {
 	// 转化 json 格式
 	messageJson, err := json.Marshal(message)
@@ -225,8 +299,10 @@ func (l *WebsocketLogic) AIChat(content string) {
 
 	c := context.Background()
 	req := types.AIRequest{
-		Ask: content,
+		Ask:   content,
+		Token: l.meta.Token,
 	}
+
 	airesponse, err := NewAILogic().AI(c, req)
 	if err != nil {
 		zlog.Errorf("AI调用失败: %s", err)
@@ -255,7 +331,6 @@ func (l *WebsocketLogic) AIChat(content string) {
 	}
 	manager.WebsocketManager.Broadcast <- msg
 }
-
 func (l *WebsocketLogic) AICommonChat(content string) {
 	c := context.Background()
 	req := types.AIRequest{
@@ -288,4 +363,174 @@ func (l *WebsocketLogic) AICommonChat(content string) {
 		Content: string(respJson),
 	}
 	manager.WebsocketManager.Broadcast <- msg
+}
+
+func (l *WebsocketLogic) CozeChat(content, BotID string) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+
+	token := global.Config.Coze.Token
+	botID := BotID
+	userID := strconv.FormatInt(l.userID, 10)
+
+	authCli := coze.NewTokenAuth(token)
+	cozeCli := coze.NewCozeAPI(authCli, coze.WithBaseURL("https://api.coze.cn"))
+
+	req := &coze.CreateChatsReq{
+		BotID:  botID,
+		UserID: userID,
+		Messages: []*coze.Message{
+			coze.BuildUserQuestionText(content, nil),
+		},
+	}
+
+	id := global.SnowflakeNode.Generate().Int64() // 生成唯一ID
+	timestamp := time.Now().UnixMilli()           // 记录时间戳
+
+	//10分钟超时
+	timeout := 60 * 10
+	cozeresp, err := cozeCli.Chat.CreateAndPoll(ctx, req, &timeout)
+	if err != nil {
+		fmt.Println("获取智能体回答失败:", err)
+		return
+	}
+	//查看coze返回的详情
+	//for _, msg := range cozeresp.Messages {
+	//	log.Printf("Role:", msg.Role, "Content:", msg.Content)
+	//}
+
+	//获取纯净的AI输出
+	var fullText strings.Builder
+	for _, msg := range cozeresp.Messages {
+		if msg.Role == "assistant" && !isJSON(msg.Content) {
+			fullText.WriteString(msg.Content)
+			fullText.WriteString("\n")
+		}
+	}
+	fmt.Println("AI：\n" + fullText.String())
+
+	// 打包信息内容
+	resp := model.OutMessage{
+		Type:      "coze_" + BotID,
+		ID:        id,
+		Content:   fullText.String(),
+		UserID:    "1000",
+		Timestamp: time.Now().UnixMilli(),
+	}
+	respJson, err := json.Marshal(resp)
+	if err != nil {
+		zlog.Errorf("websocket 打包消息格式错误: %s", err)
+		return
+	}
+	//发到用户
+	msg := model.ChatMessage{
+		ToType:  "user",
+		To:      l.userID,
+		Content: string(respJson),
+	}
+	manager.WebsocketManager.Broadcast <- msg
+
+	// 保存聊天记录
+	message := model.OutMessage{
+		Type:      "coze_" + BotID,
+		ID:        id,
+		Content:   fullText.String(),
+		UserID:    "ai",
+		Timestamp: timestamp,
+	}
+	SaveChatMessage(context.Background(), message)
+}
+func (l *WebsocketLogic) CozeStreamChat(content, BotID string) {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	token := global.Config.Coze.Token
+	userID := strconv.FormatInt(l.userID, 10)
+
+	authCli := coze.NewTokenAuth(token)
+
+	// 初始化 Coze API
+	cozeCli := coze.NewCozeAPI(authCli, coze.WithBaseURL("https://api.coze.cn"), coze.WithHttpClient(&http.Client{
+		Timeout: time.Minute * 2,
+	}))
+
+	id := global.SnowflakeNode.Generate().Int64() // 生成唯一ID
+	conversationID := ""                          // 记录会话ID
+	allContent := ""                              // 记录用户消息
+	timestamp := time.Now().UnixMilli()           // 记录时间戳
+
+	// 创建会话
+	req := &coze.CreateChatsReq{
+		ConversationID: conversationID,
+		BotID:          BotID,
+		UserID:         userID,
+		Messages: []*coze.Message{
+			coze.BuildUserQuestionText(content, nil),
+		},
+	}
+
+	resp, err := cozeCli.Chat.Stream(ctx, req)
+	if err != nil {
+		fmt.Printf("Error starting chats: %v\n", err)
+		return
+	}
+
+	defer resp.Close()
+	for {
+		event, err := resp.Recv()
+		if errors.Is(err, io.EOF) {
+			zlog.Debugf("开始流式传输")
+			break
+		}
+		if err != nil {
+			zlog.Errorf("流式传输错误: %v\n", err)
+			break
+		}
+		if event.Event == coze.ChatEventConversationMessageDelta {
+			if event.Message != nil && conversationID == "" {
+				conversationID = event.Message.ConversationID
+				zlog.Debugf("获取对话id: %v", conversationID)
+			}
+			// 打包信息内容
+			resp := model.OutMessage{
+				Type:      "coze_" + BotID,
+				ID:        id,
+				Content:   event.Message.Content,
+				UserID:    "10000",
+				Timestamp: time.Now().UnixMilli(),
+			}
+			respJson, err := json.Marshal(resp)
+			if err != nil {
+				zlog.Errorf("websocket 打包消息格式错误: %s", err)
+				return
+			}
+			//发到用户
+			msg := model.ChatMessage{
+				ToType:  "user",
+				To:      l.userID,
+				Content: string(respJson),
+			}
+			manager.WebsocketManager.Broadcast <- msg
+			allContent += event.Message.Content
+		} else if event.Event == coze.ChatEventConversationChatCompleted {
+			zlog.Debugf("本次使用token数: %d", event.Chat.Usage.TokenCount)
+		} else {
+			zlog.Debugf("未知事件: %s", event.Event)
+		}
+	}
+
+	// 保存聊天记录
+	message := model.OutMessage{
+		Type:      "coze_" + BotID,
+		ID:        id,
+		Content:   allContent,
+		UserID:    "10000",
+		Timestamp: timestamp,
+	}
+	SaveChatMessage(context.Background(), message)
+}
+
+// 简单判断是否为 JSON
+func isJSON(s string) bool {
+	return len(s) > 0 && s[0] == '{'
 }

@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"eino_gozero/common/ai_common/ais/aiUtils"
 	"encoding/json"
 	"fmt"
 	"github.com/cloudwego/eino/components/tool"
@@ -43,13 +42,22 @@ func GetUserInfo(ctx context.Context, params *GetUserInfoInputParams) (map[strin
 	// 1. 目标接口
 	url := "http://localhost:8080/api/user/get-user-info?user_id=" + params.ID
 	//获取 JWT
-	jwt, _ := aiUtils.GetToken()
+	//jwt, _ := aiUtils.GetToken()
+	jwt, ok := ctx.Value("Authorization").(string)
+	if !ok {
+		fmt.Println(jwt)
+	}
+	fmt.Println(jwt)
+
 	// 4. 创建请求
 	req, _ := http.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", "Bearer "+jwt)
 	req.Header.Set("Cache-Control", "no-cache")
 
 	resp, err := http.DefaultClient.Do(req)
+	fmt.Println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+	fmt.Println(resp.Body)
+	fmt.Println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 	if err != nil {
 		fmt.Println(">>> 发送失败:", err)
 		return nil, err
@@ -88,6 +96,7 @@ func GetUserInfo(ctx context.Context, params *GetUserInfoInputParams) (map[strin
 		"bio":            u.Bio,
 		"device_info":    u.DeviceInfo,
 	}
+
 	return respMap, nil
 }
 func CreateGetUserInfoTool() tool.InvokableTool {

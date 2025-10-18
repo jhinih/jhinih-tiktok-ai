@@ -30,6 +30,7 @@ type RouteManager struct {
 	ContactRoutes *gin.RouterGroup // 关系相关的路由组，处理关系功能
 	ChatRoutes    *gin.RouterGroup // 聊天相关的路由组，处理聊天功能
 	AIRoutes      *gin.RouterGroup // AI相关的路由组
+	ShopRoutes    *gin.RouterGroup // 商城相关的路由组
 }
 
 // NewRouteManager 创建一个新的 RouteManager 实例，包含各业务功能的路由组
@@ -46,6 +47,7 @@ func NewRouteManager(router *gin.Engine) *RouteManager {
 		VideosRoutes:  router.Group("/api/videos"),
 		ContactRoutes: router.Group("/api/contact"),
 		AIRoutes:      router.Group("/api/ai"),
+		ShopRoutes:    router.Group("/api/shop"),
 	}
 }
 
@@ -91,10 +93,16 @@ func (rm *RouteManager) RegisterContactRoutes(handler PathHandler) {
 	handler(rm.ContactRoutes)
 }
 
-// RegisterAIRoutes 注册feed流相关的路由处理函数
+// RegisterAIRoutes 注册AI相关的路由处理函数
 // @param handler PathHandler - 路由处理函数
 func (rm *RouteManager) RegisterAIRoutes(handler PathHandler) {
 	handler(rm.AIRoutes)
+}
+
+// RegisterShopRoutes 注册商城相关的路由处理函数
+// @param handler PathHandler - 路由处理函数
+func (rm *RouteManager) RegisterShopRoutes(handler PathHandler) {
+	handler(rm.ShopRoutes)
 }
 
 // RegisterMiddleware 根据组名为对应的路由组注册中间件
@@ -119,6 +127,8 @@ func (rm *RouteManager) RegisterMiddleware(group string, middleware Middleware) 
 		rm.ChatRoutes.Use(middleware())
 	case "ai":
 		rm.AIRoutes.Use(middleware())
+	case "shop":
+		rm.ShopRoutes.Use(middleware())
 	}
 }
 

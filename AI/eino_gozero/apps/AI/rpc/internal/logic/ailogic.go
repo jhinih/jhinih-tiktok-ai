@@ -62,7 +62,7 @@ func (l *AILogic) AI(in *ai.AIRequest) (*ai.AIResponse, error) {
 	outsidegraph := aiUtils.AIWithTools("all",
 		"你必须使用工具完成用户请求，工具如下：\n"+
 			"- send_code: 发送验证码，需要 email 参数\n"+
-			"- GetUserInfo: 获取用户信息，需要 id 参数\n"+
+			"- GetUserInfo: 获取用户信息，需要 id 参数(字符串)\n"+
 			"- GetVideo: 获取视频，无需参数\n"+
 			"- get_game: 获取游戏链接，需要 name 参数\n\n"+
 			"如果用户提到“用户的id”或“用户ID”，"+

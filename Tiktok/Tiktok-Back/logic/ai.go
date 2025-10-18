@@ -18,14 +18,14 @@ func NewAILogic() *AILogic {
 	return &AILogic{}
 }
 
-func crawler(url string, payload map[string]any) (string, error) {
+func crawler_nojwt(url string, payload map[string]any) (string, error) {
 	// 要 POST 的 JSON 数据
 	raw, _ := json.Marshal(payload)
 
 	// 创建请求
 	request, _ := http.NewRequest("POST", url, bytes.NewReader(raw))
 	request.Header.Set("Content-Type", "application/json")
-	//repository.Header.Set("Authorization", "Bearer "+jwt)
+	//request.Header.Set("Authorization", "Bearer "+jwt)
 
 	// 发送请求
 	response, err := http.DefaultClient.Do(request)
@@ -46,7 +46,39 @@ func crawler(url string, payload map[string]any) (string, error) {
 
 	var s Resp
 	json.NewDecoder(response.Body).Decode(&s)
-	fmt.Printf("status: %d\nbody  :  %s\n", response.StatusCode, s.Data.Answer)
+	//fmt.Printf("status: %d\nbody  :  %s\n", response.StatusCode, s.Data.Answer)
+	resp := s.Data.Answer
+	return resp, nil
+}
+func crawler(url, Token string, payload map[string]any) (string, error) {
+	// 要 POST 的 JSON 数据
+	raw, _ := json.Marshal(payload)
+
+	// 创建请求
+	request, _ := http.NewRequest("POST", url, bytes.NewReader(raw))
+	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Authorization", Token)
+
+	// 发送请求
+	response, err := http.DefaultClient.Do(request)
+	if err != nil {
+		fmt.Println("发送请求失败:", err)
+		return "爬虫失败", err
+	}
+	defer response.Body.Close()
+
+	// 6. 打印结果
+	type Resp struct {
+		Code int    `json:"code"`
+		Msg  string `json:"msg"`
+		Data struct {
+			Answer string `json:"answer"`
+		} `json:"data"`
+	}
+
+	var s Resp
+	json.NewDecoder(response.Body).Decode(&s)
+	//fmt.Printf("status: %d\nbody  :  %s\n", response.StatusCode, s.Data.Answer)
 	resp := s.Data.Answer
 	return resp, nil
 }
@@ -140,7 +172,7 @@ func (l *AILogic) SendCodeAI(ctx context.Context, req types.AIRequest) (resp typ
 	defer utils.RecordTime(time.Now())()
 	url := "http://localhost:8888/api/ai/AISendCodeChat"
 	payload := map[string]any{"ask": req.Ask}
-	response, err := crawler(url, payload)
+	response, err := crawler(url, req.Token, payload)
 	if err != nil {
 		fmt.Println("发送请求失败:", err)
 	}
@@ -153,7 +185,7 @@ func (l *AILogic) GetUserInfoAI(ctx context.Context, req types.AIRequest) (resp 
 	defer utils.RecordTime(time.Now())()
 	url := "http://localhost:8888/api/ai/AIGetUserInfoChat"
 	payload := map[string]any{"ask": req.Ask}
-	response, err := crawler(url, payload)
+	response, err := crawler(url, req.Token, payload)
 	if err != nil {
 		fmt.Println("发送请求失败:", err)
 	}
@@ -167,7 +199,7 @@ func (l *AILogic) GetVideoAI(ctx context.Context, req types.AIRequest) (resp typ
 	defer utils.RecordTime(time.Now())()
 	url := "http://localhost:8888/api/ai/AIGetVideoChat"
 	payload := map[string]any{"ask": req.Ask}
-	response, err := crawler(url, payload)
+	response, err := crawler(url, req.Token, payload)
 	if err != nil {
 		fmt.Println("发送请求失败:", err)
 	}
@@ -181,7 +213,7 @@ func (l *AILogic) AllAI(ctx context.Context, req types.AIRequest) (resp types.AI
 	defer utils.RecordTime(time.Now())()
 	url := "http://localhost:8888/api/ai/aiAllChat"
 	payload := map[string]any{"ask": req.Ask}
-	response, err := crawler(url, payload)
+	response, err := crawler(url, req.Token, payload)
 	if err != nil {
 		fmt.Println("发送请求失败:", err)
 	}
@@ -195,7 +227,7 @@ func (l *AILogic) AI(ctx context.Context, req types.AIRequest) (resp types.AIRes
 	defer utils.RecordTime(time.Now())()
 	url := "http://localhost:8888/api/ai/aiAllChat"
 	payload := map[string]any{"ask": req.Ask}
-	response, err := crawler(url, payload)
+	response, err := crawler(url, req.Token, payload)
 	if err != nil {
 		fmt.Println("请求失败:", err)
 	}
